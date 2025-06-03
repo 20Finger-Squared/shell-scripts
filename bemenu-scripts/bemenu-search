@@ -1,0 +1,44 @@
+#!/bin/bash
+
+browser="$1"
+shift
+
+# List of supported engines
+engines=(yt youtube ddg duck wiki wikipedia arch archwiki gh github so stackoverflow aur)
+
+engine="$(printf "%s\n" "${engines[@]}" | ~/.config/my-custom-scripts/bemenu-scripts/bemenu-wrap -p 'Search: ')"
+
+if [ -z $engine ]; then
+    exit 1
+fi
+
+case "$engine" in
+    yt|youtube)
+        searchEngine="https://www.youtube.com/results?search_query="
+        ;;
+    ddg|duck)
+        searchEngine="https://duckduckgo.com/?q="
+        ;;
+    wiki|wikipedia)
+        searchEngine="https://en.wikipedia.org/wiki/Special:Search?search="
+        ;;
+    arch|archwiki)
+        searchEngine="https://wiki.archlinux.org/index.php?search="
+        ;;
+    gh|github)
+        searchEngine="https://github.com/search?q="
+        ;;
+    so|stackoverflow)
+        searchEngine="https://stackoverflow.com/search?q="
+        ;;
+    aur)
+        searchEngine="https://aur.archlinux.org/packages/?O=0&K="
+        ;;
+esac
+
+query="$(echo -e "" | ./bemenu-wrap -p 'Search: ')"
+
+if [ -n "$query" ]; then
+    $browser "$searchEngine$query" &
+fi
+

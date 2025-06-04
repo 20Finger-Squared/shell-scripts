@@ -1,0 +1,39 @@
+#!/bin/bash
+
+run_bemenu_options() {
+    local -n opts=$1  # Reference the passed associative array by name
+
+    local keys=("${!opts[@]}")
+    local engine
+    engine="$(printf "%s\n" "${keys[@]}" | bemenu $(~/.config/my-custom-scripts/bemenu-scripts/bemenu-flags) -p 'Search:')"
+
+    if [ -z "$engine" ]; then
+        return 1
+    fi
+
+    eval "${opts[$engine]}"
+}
+
+declare -A audio_options=(
+    ["play"]="playerctl play"
+    ["pause"]="playerctl pause"
+    ["next"]="playerctl next"
+    ["previous"]="playerctl previous"
+    ["stop"]="playerctl stop"
+    ["status"]="playerctl status"
+)
+
+declare -A quick_file=(
+    ["home"]="nautilus ~/"
+    ["downloads"]="nautilus Downloads"
+    ["documents"]="nautilus Documents"
+    ["work"]="nautilus ~/Documents/work"
+)
+
+declare -A opts=(
+    ["audio"]="run_bemenu_options audio_options"
+    ["search"]="~/.config/my-custom-scripts/bemenu-scripts/bemenu-search zen-browser"
+    ["quick-file"]="run_bemenu_options quick_file"
+)
+
+run_bemenu_options opts

@@ -6,7 +6,7 @@ shift
 # List of supported engines
 engines=(yt youtube ddg duck wiki wikipedia arch archwiki gh github so stackoverflow aur)
 
-engine="$(printf "%s\n" "${engines[@]}" | ~/.config/my-custom-scripts/bemenu-scripts/bemenu-wrap -p 'Search: ')"
+engine="$(printf "%s\n" "${engines[@]}" | bemenu $(~/.config/my-custom-scripts/bemenu-scripts/bemenu-flags) -p 'Search: ')"
 
 if [ -z $engine ]; then
     exit 1
